@@ -10,9 +10,11 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 
+print('start app')
 # model link: https://fasttext.cc/docs/en/english-vectors.html
 model_path = 'your_path_to_model'
 model_fastText = gensim.models.KeyedVectors.load_word2vec_format(model_path)
+print('model loaded')
 
 
 def clean_str(s):
