@@ -15,6 +15,10 @@ print('start app')
 # model link: https://fasttext.cc/docs/en/english-vectors.html
 model_path = '/mnt/data/crawl-300d-2M.vec'
 model_fastText = gensim.models.KeyedVectors.load_word2vec_format(model_path)
+# other way:
+# from gensim.models.wrappers import FastText
+# model = FastText.load_fasttext_format('wiki.simple')
+
 print('model loaded')
 p = inflect.engine()
 
