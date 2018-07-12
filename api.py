@@ -24,26 +24,37 @@ p = inflect.engine()
 
 
 def clean_str(s):
-    for c in string.punctuation:
-        s = s.replace(c, "")
-    return s
+    for char in string.punctuation:
+        s = s.replace(char, "")
+    s = s.split()
+    for count in range(len(s)):
+        if s[count].isdigit():
+            s[count] = p.number_to_words(int(s[count]))
+    return ' '.join(s)
 
 
 def get_similarity_euql(model, first_sentence, second_sentence):
     similarity = 0
+    if first_sentence == second_sentence:
+        return 0.0
+
     first_sentence = [i for i in clean_str(first_sentence).split() if i in model]
     second_sentence = [i for i in clean_str(second_sentence).split() if i in model]
+    
+    if len(first_sentence) == 0:
+        return 's1 sentence is too short or the model does not contain a word from this sentence'
+
+    if len(second_sentence) == 0:
+        return 's2 sentence is too short or the model does not contain a word from this sentence'
+
     for i in first_sentence:
-        if i.isdigit():
-            i = p.number_to_words(int(i))
         first_vector = model[i]
         sim_i = 0
         for j in second_sentence:
-            if j.isdigit():
-                j = p.number_to_words(int(j))
             second_vector = model[j]
             sim_i += euclidean(first_vector, second_vector)
         similarity += sim_i / len(second_sentence)
+
     return similarity / len(first_sentence)
 
 
